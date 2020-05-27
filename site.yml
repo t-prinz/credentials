@@ -1,0 +1,50 @@
+---
+- name: Test per-host or per-group credentials
+  hosts: groupa, groupb
+  gather_facts: false
+
+  tasks:
+    - name: Block for hosts in groupa
+      block:
+
+        - name: Print message
+          debug:
+            msg: "in groupa"
+
+        - name: Set username
+          set_fact:
+            ansible_user: tprinz
+
+        - name: Set password
+          set_fact:
+            ansible_password: "redhat"
+
+      when: "'groupa' in group_names"
+
+    - name: Block for hosts in groupb
+      block:
+
+        - name: Print message
+          debug:
+            msg: "in groupb"
+
+        - name: Set username
+          set_fact:
+            ansible_user: joe
+
+        - name: Set password
+          set_fact:
+            ansible_password: "r3dhat"
+
+      when: "'groupb' in group_names"
+
+    - name: Gather facts
+      setup:
+
+    - name: Connect and get username
+      shell: "whoami"
+      register: status
+
+    - name: Print info
+      debug:
+        var: status
