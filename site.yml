@@ -13,7 +13,7 @@
 
         - name: Set username
           set_fact:
-            ansible_user: tprinz
+            ansible_user: frank
 
         - name: Set password
           set_fact:
